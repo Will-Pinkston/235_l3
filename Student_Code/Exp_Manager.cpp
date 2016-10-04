@@ -116,10 +116,20 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
         else if (isdigit(check))
         {
             ss1.seekg(-1, ios_base::cur);
-            int icheck;
+            float icheck;
             if (ss1 >> icheck)
             {
-                ss1.seekg(-1, ios_base::cur);
+                int adjust = 0;
+                stringstream ss3;
+                ss3 << icheck;
+                char ch;
+                while (ss3 >> ch)
+                {
+                    if (ch == '.') return "invalid";
+                    adjust++;
+                }
+                adjust *= -1;
+                ss1.seekg(adjust, ios_base::cur);
                 ss1 >> c;
                 calc.push(c);
             }
