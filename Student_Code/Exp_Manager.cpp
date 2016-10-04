@@ -82,7 +82,11 @@ bool Exp_Manager::isBalanced(string expression)
       }
       else return false;
   }
-  return true;
+    if (checker.size() == 0)
+    {
+        return true;
+    }
+    else return true;
 }
 //------------------------------------------------------------------------
 
