@@ -5,3 +5,4 @@
 1.5 fixed divide by zero segfault
 1.6 first write postfixtoInfix
 1.7 added spaces to converted infix string
+1.8 added float check and bad string check

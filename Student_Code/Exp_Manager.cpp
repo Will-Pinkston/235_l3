@@ -116,8 +116,16 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
         else if (isdigit(check))
         {
             ss1.seekg(-1, ios_base::cur);
-            ss1 >> c;
-            calc.push(c);
+            int icheck;
+            if (ss1 >> icheck)
+            {
+                ss1 >> c;
+                calc.push(c);
+            }
+            else
+            {
+                return "invalid";
+            }
         }
         else
         {
@@ -125,7 +133,15 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
         }
     }
     ss2 << calc.top();
-    return ss2.str();
+    calc.pop();
+    if (calc.size() == 0)
+    {
+        return ss2.str();
+    }
+    else
+    {
+        return "invalid";
+    }
 }
 //------------------------------------------------------------------------
 
