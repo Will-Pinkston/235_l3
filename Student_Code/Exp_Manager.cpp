@@ -22,27 +22,35 @@ void printStack (stack<char> writeIt)
 }
 
 
-int priorityCheck (char check)
+int priorityCheck (stack<char>ops)
 {
-    if (check == '(' || check == '[' || check == '{')
+    if (ops.size() == 0)
     {
-        return wild;
-    }
-    else if (check == '+' || check == '-')
-    {
-        return low;
-    }
-    else if (check == '*' || check == '/' || check == '%')
-    {
-        return high;
-    }
-    else if (check == ')' || check == ']' || check == '}')
-    {
-        return immediate;
+        return empty;
     }
     else
     {
-        return -1;
+        char check = ops.top();
+        if (check == '(' || check == '[' || check == '{')
+        {
+            return wild;
+        }
+        else if (check == '+' || check == '-')
+        {
+            return low;
+        }
+        else if (check == '*' || check == '/' || check == '%')
+        {
+            return high;
+        }
+        else if (check == ')' || check == ']' || check == '}')
+        {
+            return immediate;
+        }
+        else
+        {
+            return -1;
+        }
     }
 }
 //------------------------------------------------------------------------
@@ -216,20 +224,21 @@ string Exp_Manager::infixToPostfix(string infixExpression)
     
     sIn << infixExpression;
     char check;
-    int priorityTop = 0;
+    int priorityTop = empty;
     while (sIn >> check)
     {
+//        std::cout << sOut.str() << endl;
         if (isdigit(check))
         {
-            //put the full number into the sOut sstream
+            //pull the full number into the sOut sstream
             sIn.seekg(-1, ios_base::cur);
             float icheck;
             if (sIn >> icheck)
             {
-                stringstream digitcount;
-                digitcount << icheck;
+                stringstream checkint;
+                checkint << icheck;
                 char ch;
-                while (digitcount >> ch)
+                while (checkint >> ch)
                 {
                     if (ch == '.') return "invalid";
                 }
@@ -240,69 +249,64 @@ string Exp_Manager::infixToPostfix(string infixExpression)
                 return "invalid";
             }
         }
-        else if (check == '(' || check == '[' || check == '{' )//0
+        else if (check == '(' || check == '[' || check == '{' )//wild
         {
             ops.push(check);
-            priorityTop = wild;
         }
-        else if (check == '+' || check == '-')//1
+        else if (check == '+' || check == '-')//low
         {
-            if (priorityTop == wild)
+            if (priorityCheck(ops)  == wild || priorityCheck(ops) == empty)
             {
                 ops.push(check);
-                priorityTop = low;
             }
             else
             {
-                while (priorityTop >= low)
+                while (priorityCheck(ops) != empty && priorityCheck(ops) != wild)
                 {
                     char hold = ops.top();
-                    ops.pop();
-                    priorityTop = priorityCheck(ops.top());
                     sOut << hold << " ";
+                    ops.pop();
                 }
                 ops.push(check);
-                priorityTop = low;
             }
         }
-        else if (check == '*' || check == '/' || check == '%')//2
+        else if (check == '*' || check == '/' || check == '%')//high
         {
-            if (priorityTop <= low)
+            if (priorityCheck(ops) == empty || priorityCheck(ops) <= low)
             {
                 ops.push(check);
-                priorityTop = high;
             }
             else
             {
-                while (priorityTop >= low)
+                while (priorityCheck(ops) != empty && priorityCheck(ops) > low)
                 {
                     char hold = ops.top();
-                    ops.pop();
-                    priorityTop = priorityCheck(ops.top());
                     sOut << hold << " ";
+                    ops.pop();
                 }
-                ops.push(check);
-                priorityTop = high;
             }
         }
-        else if (check == ')' || check == ']' || check == '}')//3
+        else if (check == ')' || check == ']' || check == '}')//immediate
         {
-            while (priorityTop != wild)
+            while (priorityCheck(ops) != empty && priorityCheck(ops) != wild)
             {
                 char hold = ops.top();
-                ops.pop();
-                priorityTop = priorityCheck(ops.top());
                 sOut << hold << " ";
+                ops.pop();
             }
             ops.pop();
-            priorityTop = wild;
         }
         else //there's something wrong in the stream
         {
             return "invalid";
         }
     }
-    
+    while (ops.size() != 0)
+    {
+        char hold = ops.top();
+        sOut << hold << " ";
+        ops.pop();
+    }
     return sOut.str();
 }
 //------------------------------------------------------------------------

@@ -16,4 +16,4 @@ public:
 };
 
 
-enum priority {wild = 0, low, high, immediate};
+enum priority {wild = 0, low, high, immediate, empty};
