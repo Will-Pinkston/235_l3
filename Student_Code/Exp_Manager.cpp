@@ -110,7 +110,7 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
                 string first = calc.top();
                 calc.pop();
                 string result;
-                calc.push(result = "(" + first + check + second + ")");
+                calc.push(result = "( " + first + " " + check + " " + second + " )");
             }
         }
         else if (isdigit(check))
