@@ -86,7 +86,7 @@ bool Exp_Manager::isBalanced(string expression)
     {
         return true;
     }
-    else return true;
+    else return false;
 }
 //------------------------------------------------------------------------
 
