@@ -122,39 +122,48 @@ string Exp_Manager::postfixEvaluate(string postfixExpression)
     {
         if (check == '+' || check == '-' || check == '*' || check == '/' || check == '%')
         {
-            //should these be ints or chars?
-            int second = calc.top();
-            calc.pop();
-            int first = calc.top();
-            calc.pop();
-            int result;
-            if (check == '+')
+            if (calc.size() <= 1)
             {
-                calc.push(result = first + second);
+                return "invalid";
             }
-            else if (check == '-')
+            else
             {
-                calc.push(result = first - second);
-            }
-            else if (check == '*')
-            {
-                calc.push(result = first * second);
-            }
-            else if (check == '/')
-            {
-                calc.push(result = first / second);
-            }
-            else if (check == '%')
-            {
-                calc.push(result = first % second);
+                int second = calc.top();
+                calc.pop();
+                int first = calc.top();
+                calc.pop();
+                int result;
+                if (check == '+')
+                {
+                    calc.push(result = first + second);
+                }
+                else if (check == '-')
+                {
+                    calc.push(result = first - second);
+                }
+                else if (check == '*')
+                {
+                    calc.push(result = first * second);
+                }
+                else if (check == '/')
+                {
+                    calc.push(result = first / second);
+                }
+                else if (check == '%')
+                {
+                    calc.push(result = first % second);
+                }
             }
         }
-        else
+        else if (isdigit(check))
         {
-            cout << ss.tellg() << endl;
             ss.seekg(-1, ios_base::cur);
             ss >> c;
             calc.push(c);
+        }
+        else
+        {
+            return "invalid";
         }
     }
     stringstream ss2;
