@@ -87,7 +87,45 @@ bool Exp_Manager::isBalanced(string expression)
 //------------------------------------------------------------------------
 string Exp_Manager::postfixToInfix(string postfixExpression)
 {
-  return "";
+    stringstream ss1;
+    stringstream ss2;
+    
+    ss1 << postfixExpression;
+    string c;
+    char check;
+    stack<string> calc;
+    
+    while (ss1 >> check)
+    {
+        if (check == '+' || check == '-' || check == '*' || check == '/' || check == '%')
+        {
+            if (calc.size() <= 1)
+            {
+                return "invalid";
+            }
+            else
+            {
+                string second = calc.top();
+                calc.pop();
+                string first = calc.top();
+                calc.pop();
+                string result;
+                calc.push(result = "(" + first + check + second + ")");
+            }
+        }
+        else if (isdigit(check))
+        {
+            ss1.seekg(-1, ios_base::cur);
+            ss1 >> c;
+            calc.push(c);
+        }
+        else
+        {
+            return "invalid";
+        }
+    }
+    ss2 << calc.top();
+    return ss2.str();
 }
 //------------------------------------------------------------------------
 

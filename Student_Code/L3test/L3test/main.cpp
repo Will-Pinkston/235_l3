@@ -16,7 +16,7 @@ int main(int argc, const char * argv[]) {
     ExpressionManagerInterface* calc = Factory::createManager();
     string one;
     getline(cin, one);
-    cout << calc->postfixEvaluate(one) << endl;
+    cout << calc->postfixToInfix(one) << endl;
     
     return 0;
 }
