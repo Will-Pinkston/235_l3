@@ -147,7 +147,14 @@ string Exp_Manager::postfixEvaluate(string postfixExpression)
                 }
                 else if (check == '/')
                 {
-                    calc.push(result = first / second);
+                    if (second == 0)
+                    {
+                        return "invalid";
+                    }
+                    else
+                    {
+                        calc.push(result = first / second);
+                    }
                 }
                 else if (check == '%')
                 {

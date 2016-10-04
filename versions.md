@@ -2,3 +2,4 @@
 1.2 first write-up of postfixEval func
 1.3 cleared up int/char in postfixEval
 1.4 added invalid ret vals
+1.5 fixed divide by zero segfault
