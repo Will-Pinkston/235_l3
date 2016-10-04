@@ -29,70 +29,60 @@ bool Exp_Manager::isBalanced(string expression)
   stack<char> checker;
   ss << expression;
   char c;
-  while (ss>>c)
+  while (ss >> c)
   {
-    if (c == (char)EOF)
-    {
-      if (checker.size() > 0)
-      {
-        return false;
-      }
-      else return true;
-    }
-    else
-    {
       if ((checker.size() == 0) && (c == '}' || c == ']' || c == ')'))
       {
-        return false;
+          return false;
       }
       else if (c == '{' || c == '[' || c == '(')
       {
-        checker.push(c);
-        std::cout << "pushed" << c << endl;
-        printStack(checker);
+          checker.push(c);
+          std::cout << "pushed" << c << endl;
+          printStack(checker);
       }
       else if (c == '}')
       {
-        if (checker.top() == '{')
-        {
-          checker.pop();
-          std::cout << "popped" << c << endl;
-          printStack(checker);
-        }
-        else
-        {
-          return false;
-        }
+          if (checker.top() == '{')
+          {
+              checker.pop();
+              std::cout << "popped" << c << endl;
+              printStack(checker);
+          }
+          else
+          {
+              return false;
+          }
       }
       else if (c == ']')
       {
-        if (checker.top() == '[')
-        {
-          checker.pop();
-          std::cout << "popped" << c << endl;
-          printStack(checker);
-        }
-        else
-        {
-          return false;
-        }
+          if (checker.top() == '[')
+          {
+              checker.pop();
+              std::cout << "popped" << c << endl;
+              printStack(checker);
+          }
+          else
+          {
+              return false;
+          }
       }
       else if (c == ')')
       {
-        if (checker.top() == '(')
-        {
-          checker.pop();
-          std::cout << "popped" << c << endl;
-          printStack(checker);
-        }
-        else
-        {
-          return false;
-        }
+          if (checker.top() == '(')
+          {
+              checker.pop();
+              std::cout << "popped" << c << endl;
+              printStack(checker);
+          }
+          else
+          {
+              return false;
+          }
       }
       else return false;
-    }
   }
+  return true;
 }
 //------------------------------------------------------------------------
 
