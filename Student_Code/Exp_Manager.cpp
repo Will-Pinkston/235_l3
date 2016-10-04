@@ -39,14 +39,12 @@ bool Exp_Manager::isBalanced(string expression)
       else if (c == '{' || c == '[' || c == '(')
       {
           checker.push(c);
-          std::cout << "pushed" << c << endl;
       }
       else if (c == '}')
       {
           if (checker.top() == '{')
           {
               checker.pop();
-              std::cout << "popped" << c << endl;
           }
           else
           {
@@ -58,7 +56,6 @@ bool Exp_Manager::isBalanced(string expression)
           if (checker.top() == '[')
           {
               checker.pop();
-              std::cout << "popped" << c << endl;
           }
           else
           {
@@ -70,7 +67,6 @@ bool Exp_Manager::isBalanced(string expression)
           if (checker.top() == '(')
           {
               checker.pop();
-              std::cout << "popped" << c << endl;
           }
           else
           {
@@ -119,41 +115,46 @@ string Exp_Manager::postfixEvaluate(string postfixExpression)
     
     stringstream ss;
     ss << postfixExpression;
-    char c;
-    stack<char> calc;
-    while (ss >> c)
+    int c;
+    char check;
+    stack<int> calc;
+    while (ss >> check)
     {
-        if (c == '+' || c == '-' || c == '*' || c == '/')
+        if (check == '+' || check == '-' || check == '*' || check == '/' || check == '%')
         {
             //should these be ints or chars?
             int second = calc.top();
             calc.pop();
             int first = calc.top();
             calc.pop();
-            char result;
-            if (c == '+')
+            int result;
+            if (check == '+')
             {
                 calc.push(result = first + second);
             }
-            else if (c == '-')
+            else if (check == '-')
             {
                 calc.push(result = first - second);
             }
-            else if (c == '*')
+            else if (check == '*')
             {
                 calc.push(result = first * second);
             }
-            else if (c == '/')
+            else if (check == '/')
             {
                 calc.push(result = first / second);
+            }
+            else if (check == '%')
+            {
+                calc.push(result = first % second);
             }
         }
         else
         {
-            if (isdigit(c))
-            {
-                calc.push(c);
-            }
+            cout << ss.tellg() << endl;
+            ss.seekg(-1, ios_base::cur);
+            ss >> c;
+            calc.push(c);
         }
     }
     stringstream ss2;

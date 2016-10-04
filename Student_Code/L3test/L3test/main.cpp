@@ -16,14 +16,7 @@ int main(int argc, const char * argv[]) {
     ExpressionManagerInterface* calc = Factory::createManager();
     string one;
     getline(cin, one);
-    if (calc->isBalanced(one))
-    {
-        cout << "string is balanced." << endl;
-    }
-    else
-    {
-        cout << "string is unbalanced." << endl;
-    }
+    cout << calc->postfixEvaluate(one) << endl;
     
     return 0;
 }
