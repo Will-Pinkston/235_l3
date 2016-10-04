@@ -20,6 +20,31 @@ void printStack (stack<char> writeIt)
   std::cout << endl;
   return;
 }
+
+
+int priorityCheck (char check)
+{
+    if (check == '(' || check == '[' || check == '{')
+    {
+        return wild;
+    }
+    else if (check == '+' || check == '-')
+    {
+        return low;
+    }
+    else if (check == '*' || check == '/' || check == '%')
+    {
+        return high;
+    }
+    else if (check == ')' || check == ']' || check == '}')
+    {
+        return immediate;
+    }
+    else
+    {
+        return -1;
+    }
+}
 //------------------------------------------------------------------------
 
 
@@ -160,7 +185,125 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
 //------------------------------------------------------------------------
 string Exp_Manager::infixToPostfix(string infixExpression)
 {
-  return "";
+    /*
+     * Converts an infix expression into a postfix expression
+     * and returns the postfix expression
+     *
+     * - The given infix expression will have a space between every number or operator.
+     * - The returned postfix expression must have a space between every number or operator.
+     * - Check lab requirements for what will be considered invalid.
+     *
+     * return the string "invalid" if infixExpression is not a valid infix expression.
+     * otherwise, return the correct postfix expression as a string.
+     */
+    
+    /*
+     precedence:
+     3 immediate ) } ]
+     2 high * / %
+     1 Low + -
+     0 wild ( { [
+    
+     only place an operator if the top element has lower precedence
+     if equal or greater, pop until you can place
+     if a closing parenthesis, pop until you reach the opening parenthesis
+     once at end of string, pop all operators
+     always put numbers into the output string immediatly
+     */
+    stringstream sOut;
+    stringstream sIn;
+    stack<char> ops;
+    
+    sIn << infixExpression;
+    char check;
+    int priorityTop = 0;
+    while (sIn >> check)
+    {
+        if (isdigit(check))
+        {
+            //put the full number into the sOut sstream
+            sIn.seekg(-1, ios_base::cur);
+            float icheck;
+            if (sIn >> icheck)
+            {
+                stringstream digitcount;
+                digitcount << icheck;
+                char ch;
+                while (digitcount >> ch)
+                {
+                    if (ch == '.') return "invalid";
+                }
+                sOut << icheck << " ";
+            }
+            else
+            {
+                return "invalid";
+            }
+        }
+        else if (check == '(' || check == '[' || check == '{' )//0
+        {
+            ops.push(check);
+            priorityTop = wild;
+        }
+        else if (check == '+' || check == '-')//1
+        {
+            if (priorityTop == wild)
+            {
+                ops.push(check);
+                priorityTop = low;
+            }
+            else
+            {
+                while (priorityTop >= low)
+                {
+                    char hold = ops.top();
+                    ops.pop();
+                    priorityTop = priorityCheck(ops.top());
+                    sOut << hold << " ";
+                }
+                ops.push(check);
+                priorityTop = low;
+            }
+        }
+        else if (check == '*' || check == '/' || check == '%')//2
+        {
+            if (priorityTop <= low)
+            {
+                ops.push(check);
+                priorityTop = high;
+            }
+            else
+            {
+                while (priorityTop >= low)
+                {
+                    char hold = ops.top();
+                    ops.pop();
+                    priorityTop = priorityCheck(ops.top());
+                    sOut << hold << " ";
+                }
+                ops.push(check);
+                priorityTop = high;
+            }
+        }
+        else if (check == ')' || check == ']' || check == '}')//3
+        {
+            while (priorityTop != wild)
+            {
+                char hold = ops.top();
+                ops.pop();
+                priorityTop = priorityCheck(ops.top());
+                sOut << hold << " ";
+            }
+            ops.pop();
+            priorityTop = wild;
+        }
+        else //there's something wrong in the stream
+        {
+            return "invalid";
+        }
+    }
+    
+    return sOut.str();
 }
 //------------------------------------------------------------------------
 
@@ -168,16 +311,6 @@ string Exp_Manager::infixToPostfix(string infixExpression)
 //------------------------------------------------------------------------
 string Exp_Manager::postfixEvaluate(string postfixExpression)
 {
-    /*
-     * Evaluates a postfix expression returns the result as a string
-     *
-     * - The given postfix expression will have a space between every number or operator.
-     * - Check lab requirements for what will be considered invalid.
-     *
-     * return the string "invalid" if postfixExpression is not a valid postfix Expression
-     * otherwise, return the correct evaluation as a string
-     */
-    
     stringstream ss;
     ss << postfixExpression;
     int c;

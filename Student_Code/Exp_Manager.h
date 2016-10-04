@@ -14,3 +14,6 @@ public:
   string infixToPostfix(string infixExpression);
   string postfixEvaluate(string postfixExpression);
 };
+
+
+enum priority {wild = 0, low, high, immediate};

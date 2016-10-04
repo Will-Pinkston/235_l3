@@ -8,3 +8,4 @@
 1.8 added float check and bad string check
 1.9 fixed stringstream blunder
 1.10 better idea realization on float recognition
+1.11 first run infixtoPostfix func
