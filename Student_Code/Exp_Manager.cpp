@@ -119,6 +119,7 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
             int icheck;
             if (ss1 >> icheck)
             {
+                ss1.seekg(-1, ios_base::cur);
                 ss1 >> c;
                 calc.push(c);
             }

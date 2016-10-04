@@ -6,3 +6,4 @@
 1.6 first write postfixtoInfix
 1.7 added spaces to converted infix string
 1.8 added float check and bad string check
+1.9 fixed stringstream blunder
