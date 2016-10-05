@@ -287,10 +287,18 @@ string Exp_Manager::infixToPostfix(string infixExpression)
             if (check == ')')
             {
                 numparen --;
+                if (numbrace == -1)
+                {
+                    return "invalid";
+                }
             }
             else if (check == ']')
             {
                 numbracket --;
+                if (numbrace == -1)
+                {
+                    return "invalid";
+                }
             }
             else if (check == '}')
             {
