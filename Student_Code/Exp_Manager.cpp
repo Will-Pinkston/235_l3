@@ -295,6 +295,10 @@ string Exp_Manager::infixToPostfix(string infixExpression)
             else if (check == '}')
             {
                 numbrace --;
+                if (numbrace == -1)
+                {
+                    return "invalid";
+                }
             }
             while (priorityCheck(ops) != empty && priorityCheck(ops) != wild)
             {
@@ -315,30 +319,30 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         {
             return "invalid";
         }
-        if (priorityCheck(ops) == immediate)
-        {
-            if (ops.top() == ')')
-            {
-                if (numparen <= 0)
-                {
-                    return "invalid";
-                }
-            }
-            else if (ops.top() == ']')
-            {
-                if (numbracket <= 0)
-                {
-                    return "invalid";
-                }
-            }
-            else if (ops.top() == '}')
-            {
-                if (numbrace <= 0)
-                {
-                    return "invalid";
-                }
-            }
-        }
+//        if (priorityCheck(ops) == immediate)
+//        {
+//            if (ops.top() == ')')
+//            {
+//                if (numparen <= 0)
+//                {
+//                    return "invalid";
+//                }
+//            }
+//            else if (ops.top() == ']')
+//            {
+//                if (numbracket <= 0)
+//                {
+//                    return "invalid";
+//                }
+//            }
+//            else if (ops.top() == '}')
+//            {
+//                if (numbrace <= 0)
+//                {
+//                    return "invalid";
+//                }
+//            }
+//        }
         else
         {
             char hold = ops.top();
