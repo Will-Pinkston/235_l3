@@ -193,41 +193,19 @@ string Exp_Manager::postfixToInfix(string postfixExpression)
 //------------------------------------------------------------------------
 string Exp_Manager::infixToPostfix(string infixExpression)
 {
-    /*
-     * Converts an infix expression into a postfix expression
-     * and returns the postfix expression
-     *
-     * - The given infix expression will have a space between every number or operator.
-     * - The returned postfix expression must have a space between every number or operator.
-     * - Check lab requirements for what will be considered invalid.
-     *
-     * return the string "invalid" if infixExpression is not a valid infix expression.
-     * otherwise, return the correct postfix expression as a string.
-     */
-    
-    /*
-     precedence:
-     3 immediate ) } ]
-     2 high * / %
-     1 Low + -
-     0 wild ( { [
-    
-     only place an operator if the top element has lower precedence
-     if equal or greater, pop until you can place
-     if a closing parenthesis, pop until you reach the opening parenthesis
-     once at end of string, pop all operators
-     always put numbers into the output string immediatly
-     */
     stringstream sOut;
     stringstream sIn;
     stack<char> ops;
     
     sIn << infixExpression;
     char check;
-//    int priorityTop = empty;
+    int numparen = 0;
+    int numbracket = 0;
+    int numbrace = 0;
+    bool inOp = false;
+    
     while (sIn >> check)
     {
-//        std::cout << sOut.str() << endl;
         if (isdigit(check))
         {
             //pull the full number into the sOut sstream
@@ -252,9 +230,21 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         else if (check == '(' || check == '[' || check == '{' )//wild
         {
             ops.push(check);
+            if (check == '(') numparen++;
+            else if (check == '[') numbracket++;
+            else if (check == '{') numbrace++;
+        }
+        else if (sOut.str().empty())
+        {
+            return "invalid";
         }
         else if (check == '+' || check == '-')//low
         {
+            if (inOp == true)
+            {
+                return "invalid";
+            }
+            inOp = true;
             if (priorityCheck(ops)  == wild || priorityCheck(ops) == empty)
             {
                 ops.push(check);
@@ -272,6 +262,11 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         }
         else if (check == '*' || check == '/' || check == '%')//high
         {
+            if (inOp == true)
+            {
+                return "invalid";
+            }
+            inOp = true;
             if (priorityCheck(ops) == empty || priorityCheck(ops) <= low)
             {
                 ops.push(check);
@@ -289,13 +284,37 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         }
         else if (check == ')' || check == ']' || check == '}')//immediate
         {
-            while (priorityCheck(ops) != empty && priorityCheck(ops) != wild)
+            if (check == ')')
             {
-                char hold = ops.top();
-                sOut << hold << " ";
+                if (numparen == 0)
+                {
+                    return "invalid";
+                }
+            }
+            else if (check == ']')
+            {
+                if (numbracket == 0)
+                {
+                    return "invalid";
+                }
+            }
+            else if (check == '}')
+            {
+                if (numbrace == 0)
+                {
+                    return "invalid";
+                }
+            }
+            else
+            {
+                while (priorityCheck(ops) != empty && priorityCheck(ops) != wild)
+                {
+                    char hold = ops.top();
+                    sOut << hold << " ";
+                    ops.pop();
+                }
                 ops.pop();
             }
-            ops.pop();
         }
         else //there's something wrong in the stream
         {
@@ -315,6 +334,12 @@ string Exp_Manager::infixToPostfix(string infixExpression)
             ops.pop();
         }
     }
+    //checking for value parity
+    if (postfixEvaluate(sOut.str()) == "invalid")
+    {
+        return "invalid";
+    }
+    //
     return sOut.str();
 }
 //------------------------------------------------------------------------
