@@ -10,3 +10,4 @@
 1.10 better idea realization on float recognition
 1.11 first run infixtoPostfix func
 1.12 rewrote infix to postfix func
+1.13 fixed high priority loop

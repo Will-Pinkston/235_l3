@@ -224,7 +224,7 @@ string Exp_Manager::infixToPostfix(string infixExpression)
     
     sIn << infixExpression;
     char check;
-    int priorityTop = empty;
+//    int priorityTop = empty;
     while (sIn >> check)
     {
 //        std::cout << sOut.str() << endl;
@@ -278,12 +278,13 @@ string Exp_Manager::infixToPostfix(string infixExpression)
             }
             else
             {
-                while (priorityCheck(ops) != empty && priorityCheck(ops) > low)
+                while (priorityCheck(ops) == high)
                 {
                     char hold = ops.top();
                     sOut << hold << " ";
                     ops.pop();
                 }
+                ops.push(check);
             }
         }
         else if (check == ')' || check == ']' || check == '}')//immediate
@@ -301,11 +302,18 @@ string Exp_Manager::infixToPostfix(string infixExpression)
             return "invalid";
         }
     }
-    while (ops.size() != 0)
+    while (priorityCheck(ops) != empty)
     {
-        char hold = ops.top();
-        sOut << hold << " ";
-        ops.pop();
+        if (priorityCheck(ops) == wild)
+        {
+            return "invalid";
+        }
+        else
+        {
+            char hold = ops.top();
+            sOut << hold << " ";
+            ops.pop();
+        }
     }
     return sOut.str();
 }
