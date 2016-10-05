@@ -230,9 +230,9 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         else if (check == '(' || check == '[' || check == '{' )//wild
         {
             ops.push(check);
-            if (check == '(') numparen++;
-            else if (check == '[') numbracket++;
-            else if (check == '{') numbrace++;
+//            if (check == '(') numparen++;
+//            else if (check == '[') numbracket++;
+//            else if (check == '{') numbrace++;
         }
         else if (sOut.str().empty())
         {
@@ -284,29 +284,29 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         }
         else if (check == ')' || check == ']' || check == '}')//immediate
         {
-            if (check == ')')
-            {
-                if (numparen == 0)
-                {
-                    return "invalid";
-                }
-            }
-            else if (check == ']')
-            {
-                if (numbracket == 0)
-                {
-                    return "invalid";
-                }
-            }
-            else if (check == '}')
-            {
-                if (numbrace == 0)
-                {
-                    return "invalid";
-                }
-            }
-            else
-            {
+//            if (check == ')')
+//            {
+//                if (numparen == 0)
+//                {
+//                    return "invalid";
+//                }
+//            }
+//            else if (check == ']')
+//            {
+//                if (numbracket == 0)
+//                {
+//                    return "invalid";
+//                }
+//            }
+//            else if (check == '}')
+//            {
+//                if (numbrace == 0)
+//                {
+//                    return "invalid";
+//                }
+//            }
+//            else
+//            {
                 while (priorityCheck(ops) != empty && priorityCheck(ops) != wild)
                 {
                     char hold = ops.top();
@@ -314,7 +314,7 @@ string Exp_Manager::infixToPostfix(string infixExpression)
                     ops.pop();
                 }
                 ops.pop();
-            }
+//            }
         }
         else //there's something wrong in the stream
         {
