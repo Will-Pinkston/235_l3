@@ -319,21 +319,21 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         {
             if (ops.top() == ')')
             {
-                if (numparen == 0)
+                if (numparen <= 0)
                 {
                     return "invalid";
                 }
             }
             else if (ops.top() == ']')
             {
-                if (numbracket == 0)
+                if (numbracket <= 0)
                 {
                     return "invalid";
                 }
             }
             else if (ops.top() == '}')
             {
-                if (numbrace == 0)
+                if (numbrace <= 0)
                 {
                     return "invalid";
                 }
