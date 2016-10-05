@@ -240,10 +240,10 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         }
         else if (check == '+' || check == '-')//low
         {
-            if (inOp == true)
-            {
-                return "invalid";
-            }
+//            if (inOp == true)
+//            {
+//                return "invalid";
+//            }
             inOp = true;
             if (priorityCheck(ops)  == wild || priorityCheck(ops) == empty)
             {
@@ -262,10 +262,10 @@ string Exp_Manager::infixToPostfix(string infixExpression)
         }
         else if (check == '*' || check == '/' || check == '%')//high
         {
-            if (inOp == true)
-            {
-                return "invalid";
-            }
+//            if (inOp == true)
+//            {
+//                return "invalid";
+//            }
             inOp = true;
             if (priorityCheck(ops) == empty || priorityCheck(ops) <= low)
             {
